@@ -29,7 +29,10 @@ public class Inventory
     {
         // lhs needs to have items added to it.
         // rhs's size is needed
-        // lhs.????(rhs.????)
+        lhs.addItems(rhs.size());
+        
+        // Add the right hand side (rhs) to the left hand side (lhs)
+        // ???? is a placeholder
     }
 
     /**
@@ -93,8 +96,8 @@ public class Inventory
      */
     public boolean isFull()
     {
-        // Replace the next line
-        return false;
+        // Return and check if the current size of the inventory is equalivalent to capacity
+        return this.slots.currentSize == capacity;
     }
 
     /**
@@ -118,7 +121,17 @@ public class Inventory
     public ItemStack findMatchingItemStack(ItemStack key)
     {
         // Add the necessary sequential search loop
-
+        LinkedList.Node<ItemStack> it = this.slots.head;
+        while (it != null) {
+            // do something
+            if (key.equals(it.data)) {
+                return it.data;
+            }
+            else {
+                it = it.next;
+            }
+        }
+        // No match was found
         return null;
     }
 
@@ -133,6 +146,27 @@ public class Inventory
 
         // Use the appendNode/add logic from Review 1 as your starting point
         // Once we reach this function... we know that `toAdd` must be stored
+
+        // If adding/creating the very first Node
+        if (this.slots.head == null) {
+            this.slots.head = newNode;
+            this.slots.tail = newNode;
+            this.slots.currentSize = 1;
+
+            newNode = null;
+            return; 
+        }
+
+        // Link/append the new node to the end of the linked list
+        // Go to tail node and let it know that New Node is at the end of the list
+        this.slots.tail.next = newNode;
+
+        // Update the tail so the new node is now the current tail
+        this.slots.tail = this.slots.tail.next;
+
+        // Increment/add 1 to the size because a new node was added to the tail.
+        this.slots.currentSize = this.slots.currentSize + 1;
+
     }
 
     /**
